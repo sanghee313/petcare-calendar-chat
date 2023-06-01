@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* FullCalendar 컨테이너 스타일 */
+      #calendar {
+      }
+      #chat-messages {
+        height: 300px; /* 원하는 높이로 설정 */
+        overflow-y: auto; /* 콘텐츠가 영역을 넘어갈 경우 스크롤 표시 */
+      }
+
+      /* 이벤트 입력 폼 스타일 */
+      #eventInput {
+        width: 30%;
+        float: left;
+        margin-left: 10px;
+        display: none;
+      }
+      #eventContents {
+        font-size: 10px; /* 크게 설정할 폰트 크기 */
+        height: 200px; /* 높이 조정 */
+      }
+      #eventClick {
+        font-size: 10px; /* 크게 설정할 폰트 크기 */
+        float: left;
+        display: none;
+      }
+      #update {
+        font-size: 10px; /* 크게 설정할 폰트 크기 */
+        float: left;
+        display: none;
+      }
+      /*navbar*/
+      body {
+        margin: 0;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #207ae9;
+        padding: 8px 12px;
+      }
+
+      .navbar_logo {
+        font-size: 24px;
+        color: white;
+      }
+
+      .navbar_logo {
+        position: absolute;
+        left: 47%;
+        justify-content: center;
+        text-align: center;
+        list-style: none;
+      }
+
+      .navbar_logo li {
+        padding: 8px 12px;
+      }
+
+      .navbar_menu {
+        display: flex;
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .navbar_menu li {
+        padding: 8px 12px;
+      }
+
+      .navbar_menu li:hover {
+        background-color: rgb(5, 45, 87);
+        border-radius: 4px;
+      }
+
+      .navbar_login {
+        list-style: none;
+        color: white;
+        display: flex;
+      }
+
+      .navbar_login li {
+        padding: 8px 12px;
+      }
+
+      .navbar_login li:hover {
+        background-color: rgb(5, 45, 87);
+        border-radius: 4px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 8px 12px;
+        }
+        .navbar_logo {
+          flex-direction: column;
+          align-items: center;
+        }
+        .navbar_logo li {
+          width: 100%;
+          text-align: center;
+        }
+        .navbar_login {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+    <script>
+
+      var eventClickFlag = false; // 플래그 변수
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var start, end, allDay;
+        var u_start,u_end,u_allDay, u_ID,u_title;
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          },
+          initialDate: "2023-01-12",
+          navLinks: true,
+          selectable: true,
+          selectMirror: true,
+
+          select: function (arg) {
+            start = arg.start;  //달력 시작 포인트
+            end = arg.end;      //달력 정착 포인트
+            allDay = arg.allDay;//달력 하루 or 부분
+
+
+            var eventInputDiv = document.getElementById("eventInput");
+            eventInputDiv.style.display = "block";
+
+            var selectedDateDiv = document.getElementById("selectedDate");
+            selectedDateDiv.textContent =
+              "Selected Date: " + start.toLocaleString();
+
+            var selectedTimeDiv = document.getElementById("selectedTime");
+            selectedTimeDiv.textContent =
+              "Selected Time: " +
+              start.toLocaleString() +
+              " - " +
+              end.toLocaleString();
+
+            var allDayDiv = document.getElementById("selectedAllDay");
+            allDayDiv.textContent = "All Day: " + (allDay ? "Yes" : "No");
+          },
+
+          //이벤트 클릭시 => 1.Read  2.수정 or 삭제
+          eventClick: function (arg) { //여기서
+            // if (confirm("Are you sure you want to delete this event?")) {
+            //   arg.event.remove();
+            // }
+            if (!eventClickFlag) { // 플래그 변수가 false일 때만 실행 현재 82,215 지워도 됨.
+              eventClickFlag = true;
+              u_start = arg.event.start;  //달력 시작 포인트
+              u_end = arg.event.end;      //달력 정착 포인트
+              u_allDay = arg.event.allDay;//달력 하루 or 부분
+              u_title = arg.event.title;
+
+              var eventClickDiv = document.getElementById("eventClick");
+              eventClickDiv.style.display = "block";
+
+
+              var startDate = new Date(arg.event.start);
+              var endDate = new Date(arg.event.end);
+
+              // Display clicked event details
+              document.getElementById("clickedDate").textContent = "Selected Date: " + startDate.toLocaleDateString();
+              document.getElementById("clickedTime").textContent = "Selected Time: " + startDate.toLocaleTimeString() + " - " + endDate.toLocaleTimeString();
+              document.getElementById("clickedAllday").textContent = "All Day: " + (arg.event.allDay ? "Yes" : "No");
+
+              document.getElementById("updateDate").textContent = "Selected Date: " + startDate.toLocaleDateString();
+              document.getElementById("updateTime").textContent = "Selected Time: " + startDate.toLocaleTimeString() + " - " + endDate.toLocaleTimeString();
+              document.getElementById("updateAllday").textContent = "All Day: " + (arg.event.allDay ? "Yes" : "No");
+
+              document.getElementById("clickedTitle").textContent = "Selected Title: " + arg.event.title;
+              document.getElementById("updateTitle").textContent = arg.event.title;
+              //주제, 시작점, 끝을 통한 eventContents 출력
+              <%for(var data of results) { %>
+                if("<%=data.start%>" === startDate.toISOString() && "<%=data.end%>"===endDate.toISOString() && "<%=data.title%>"===arg.event.title) {
+                  var clickedType = document.getElementById("clickedType");
+                  if ("<%= data.type %>" === "common") {
+                    clickedType.textContent = "<%= data.type %>";
+                  } else {
+                    clickedType.textContent = "me";
+                  }
+                  //Contents 출력
+                  document.getElementById("clickedContents").textContent = "<%=data.eventContents%>";
+                  console.log("<%=data.eventContents%>");//테스트
+                  const ID = <%=data.id%>;
+                  u_ID = ID;
+                  // console.log(id);
+                  var removeEventButton = document.getElementById("removeEventButton");
+                  removeEventButton.addEventListener("click",function(){
+                  /**삭제 버튼 클릭시
+                    *  1. removeEventButton의 클릭을 감지한다.
+                    *  2. updateID 값을 받아 post 한다.
+                    *  3. arg.event.remove()를 하고 종료.
+                  */
+                    fetch('/family/delete', {
+                      method: 'DELETE',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ id: ID })
+                    })
+                    .then(response => {
+                      if (response.ok) {
+                        // 삭제 성공한 경우
+                        console.log('데이터가 성공적으로 삭제되었습니다.');
+                        // 추가로 필요한 처리 수행
+                      } else {
+                        // 삭제 실패한 경우
+                        console.log('데이터 삭제에 실패했습니다.');
+                      }
+                    })
+                    .catch(error => {
+                      console.error('데이터 삭제 중 오류가 발생했습니다.', error);
+                    });
+                    arg.event.remove();
+                  });
+                }
+              <%}%>
+
+              var updateButton = document.getElementById("updateButton");
+              updateButton.addEventListener("click",function(){
+                arg.event.remove();
+                var updateType = document.querySelector('input[name="updateType"]:checked');
+                var updateTypeValue = updateType ? updateType.value : '';
+                // console.log(updateTypeValue);
+
+                if(updateTypeValue ==="common"){
+                  calendar.addEvent({
+                    start: u_start.toISOString(),
+                    end: u_end.toISOString(),
+                    title: u_title,
+                    allDay: u_allDay,
+                    color :"orange",
+                  });
+                }else{
+                  calendar.addEvent({
+                    start: u_start.toISOString(),
+                    end: u_end.toISOString(),
+                    title: u_title,
+                    allDay: u_allDay,
+                  });
+                }
+                console.log(u_ID);
+                console.log(updateTypeValue);
+
+                var updateContents = document.getElementById("updateContents");
+                var u_cont = updateContents.value.trim();
+                console.log(u_cont);
+
+
+                // 업데이트할 데이터 객체 생성
+                var updateData = {
+                  id: u_ID,                // 업데이트할 데이터의 고유 식별자
+                  type: updateTypeValue,   // 업데이트할 타입 (common 또는 me)
+                  contents: u_cont         // 업데이트할 내용
+                };
+                console.log(updateData);
+
+                // 서버로 데이터 전송
+                fetch("/family/update", {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(updateData)
+                })
+                .then(response => {
+                  if (response.ok) {
+                    console.log("Data has been successfully updated.");
+                    // 업데이트 성공 후 수행할 작업을 여기에 추가하세요.
+                  } else {
+                    console.log("Failed to update data.");
+                  }
+                })
+                .catch(error => {
+                  console.log("An error occurred while updating data:", error);
+                });
+
+              });
+              eventClickFlag = false; // 이벤트 처리가 완료되면 플래그 변수를 다시 false로 설정
+            }
+
+          }, //여기까지
+          editable: true,
+          dayMaxEvents: true,
+          events: [
+            <% for (var event of results) { %>
+              <% if (event.type === 'common') { %>
+                  {
+                    allDay: <%= event.allDay === 1 ? true : false %>,
+                    start: '<%= event.start %>',
+                    end: '<%= event.end %>',
+                    title: '<%= event.title %>',
+                    color: 'orange',
+                    // contents: '<%=event.eventContents%>',
+                  },
+                <% } else { %>
+                  {
+                    allDay: <%= event.allDay === 1 ? true : false %>,
+                    start: '<%= event.start %>',
+                    end: '<%= event.end %>',
+                    title: '<%= event.title %>',
+                  },
+              <% } %>
+            <% } %>
+          ],
+
+
+
+        });
+
+        calendar.render();
+
+        //114-171 버튼 클릭시 데이터 post
+        var addEventButton = document.getElementById("addEventButton");
+        addEventButton.addEventListener("click", function () {
+          var titleInput = document.getElementById("eventTitle");       //달력 제목
+          var contentsInput = document.getElementById("eventContents"); //달력 세부 사항 내용
+          var commonTypeInput = document.getElementById("commonType");  //달력 작성 반환-> commom , me
+
+          var title = titleInput.value.trim();
+          var contents = contentsInput.value.trim();
+          var type = commonTypeInput.checked ? "common" : "me";
+          if(type ==="common"){
+            var color = "orange";
+          }
+
+          if (title && contents && type) {
+            calendar.addEvent({
+              title: title,
+              start: start,
+              end: end,
+              allDay: allDay,
+              color :color,
+            });
+
+            var eventData = {
+              start: start.toISOString(), //달력 시작
+              end: end.toISOString(),     //달력 종료
+              allDay: allDay,             //달력 하루종일인지 파악
+              title: title,               //달력 제목
+              contents: contents,         //달력 세부 내용
+              type: type,                 // 타입 - 가족 공통 , 내꺼 전용
+            };
+
+            //버튼 데이터 전송
+            fetch("/family/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(eventData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Event data has been successfully posted.");
+                  // 여기에서 필요한 추가 작업을 수행할 수 있습니다.
+                } else {
+                  console.log("Failed to post event data.");
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "An error occurred while posting event data:",
+                  error
+                );
+              });
+
+            calendar.unselect();
+
+            titleInput.value = "";
+            contentsInput.value = "";
+            commonTypeInput.checked = false;
+            var eventInputDiv = document.getElementById("eventInput");
+            eventInputDiv.style.display = "none";
+          }
+        });
+
+        document.getElementById("deleteButton").addEventListener("click", function() {
+          document.getElementById("eventInput").style.display = "none";
+        });
+
+        document.getElementById("deleteClickedButton").addEventListener("click", function() {
+          document.getElementById("eventClick").style.display = "none";
+        });
+
+        document.getElementById("removeEventButton").addEventListener("click", function() {
+          document.getElementById("eventClick").style.display = "none";
+        });
+        document.getElementById("updateEventButton").addEventListener("click", function() {
+          document.getElementById("update").style.display = "block";
+        });
+
+
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <ul class="navbar_menu">
+          <li><a href="#">Pet</a></li>
+          <li><a href="#">Iot</a></li>
+          <li><a href="#">Edit</a></li>
+          <li><a href="#">Schedule with Communication</a></li>
+        </ul>
+        <div class="navbar_logo">
+          <i class="fa-solid fa-house"></i>
+          <a href="">Petcare</a>
+        </div>
+        <ul class="navbar_login">
+          <li><a href="#">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <div class="container">
+            <h1>Chat Room</h1>
+
+            <div class="card">
+              <div class="card-body" id="chat-messages">
+                <!-- 채팅 메시지가 표시될 영역 -->
+              </div>
+            </div>
+
+            <div class="input-group mt-3">
+              <input
+                type="text"
+                class="form-control"
+                id="message-input"
+                placeholder="메시지를 입력하세요..."
+              />
+              <button class="btn btn-primary" onclick="sendMessage()">
+                전송
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div id="calendar-container">
+            <div id="calendar"></div>
+
+            <div id="eventInput">
+              <button id="deleteButton">delete Event</button>
+              <div id="selectedDate"></div>
+              <div id="selectedTime"></div>
+              <div id="selectedAllDay"></div>
+
+              <input
+                type="text"
+                id="eventTitle"
+                placeholder="주제"
+                required
+              /><br />
+              <div>
+                <input
+                  type="radio"
+                  id="commonType"
+                  name="eventType"
+                  value="common"
+                  required
+                />
+                <label for="commonType">공통</label>
+                <input
+                  type="radio"
+                  id="meType"
+                  name="eventType"
+                  value="me"
+                  required
+                />
+                <label for="meType">나</label>
+              </div>
+              <input
+                type="text"
+                id="eventContents"
+                placeholder="세부 내용"
+                required
+              />
+              <br />
+              <button id="addEventButton">Add Event</button>
+            </div>
+            <div id="eventClick">
+              <button id="deleteClickedButton">delete Event</button>
+              <div id="clickedDate"></div>
+              <div id="clickedTime"></div>
+              <div id="clickedAllday"></div>
+              <div id="clickedType"></div>
+
+              <div id="clickedTitle"></div>
+              <div id="clickedContents"></div>
+              <br />
+              <button id="updateEventButton">Update Event</button>
+              <button id="removeEventButton">Remove Event</button>
+            </div>
+
+            <div id="update">
+              <button id="updateClickedButton">delete Event</button>
+              <!--수정 type 과 Contents-->
+
+              <!--eventClicked에서 데이더 받기-->
+              <!--고정-->
+              <div id="updateDate"></div>
+              <!--고정-->
+              <div id="updateTime"></div>
+              <!--고정-->
+              <div id="updateAllday"></div>
+              <!--고정 주제-->
+              <div id="updateTitle"></div>
+              <div>
+                <input
+                  type="radio"
+                  id="updatCommonType"
+                  name="updateType"
+                  value="common"
+                  required
+                />
+                <label for="commonType">공통</label>
+                <input
+                  type="radio"
+                  id="updateMeType"
+                  name="updateType"
+                  value="me"
+                  required
+                />
+                <label for="meType">나</label>
+              </div>
+              <input
+                type="text"
+                id="updateContents"
+                placeholder="세부 내용"
+                required
+              />
+              <br />
+              <button id="updateButton">Update Event</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

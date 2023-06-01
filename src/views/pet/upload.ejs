@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css" />
+    <link rel="stylesheet" href="../css/flex.css" />
+    <title>Pet Care : Upload</title>
+  </head>
+  <body>
+    <h1><%= pageTitle %></h1>
+    <span><%= errorMessage %></span>
+    <form action="" method="post">
+      <div class="preference">
+        <label for="upload_name">Name</label>
+        <input
+          id="upload_name"
+          type="text"
+          name="name"
+          placeholder="name"
+          required
+        />
+      </div>
+      <div class="preference">
+        <label for="upload_age">Age</label>
+        <input id="upload_age" type="text" name="age" placeholder="age" />
+      </div>
+      <div class="preference">
+        <label for="upload_date">Birth</label>
+        <input id="upload_date" type="text" name="birth" placeholder="birth" />
+      </div>
+      <div class="preference">
+        <label for="upload_type">Type</label>
+        <input
+          id="upload_type"
+          type="type"
+          name="type"
+          placeholder="반려동물 종"
+        />
+        <input type="text" name="type_details" placeholder="type_details" />
+      </div>
+      <div class="preference">
+        <label for="upload_introduce">introduce</label>
+        <textarea
+          name="introduce"
+          id="upload_introduce"
+          cols="100"
+          rows="0"
+          placeholder="반려동물을 소개해주세요!"
+        ></textarea>
+      </div>
+      <input type="submit" value="Upload Pet" />
+    </form>
+  </body>
+</html>

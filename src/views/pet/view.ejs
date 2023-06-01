@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css" />
+    <title>Pet Care | <%= pageTitle %>></title>
+  </head>
+  <body>
+    <header>
+      <h1>Pet List</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#">Log out</a></li>
+          <li><a href="upload">upload Pet &rarr;</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <% if(pets != ""){ %> <% for(var i=0; i< pets.length; i++) { %>
+      <div class="container">
+        <h3><%= pets[i].name %></h3>
+        <ul>
+          <li>age: <%= pets[i].age%></li>
+          <li>birth: <%= pets[i].birth%></li>
+          <li>type: <%= pets[i].type.value%></li>
+          <li>type_details: <%= pets[i].type.details%></li>
+          <li>introduce</li>
+          <ul>
+            <% for(var j = 0; j< pets[i].introduce.length; j++) { %>
+            <li><%= pets[i].introduce[j] %></li>
+            <% } %>
+          </ul>
+        </ul>
+      </div>
+      <div class="flex_container">
+        <a href="remove/<%= pets[i].id %>">pet delete &rarr;</a><br />
+        <a href="edit/<%= pets[i].id %>">pet Edit &rarr;</a>
+      </div>
+      <div class="under_line"></div>
+      <% }}else { %>
+      <li>Sorry Nothing found.</li>
+      <% } %>
+    </main>
+    <hr />
+    <footer>&copy; 2023 Petcare</footer>
+  </body>
+</html>

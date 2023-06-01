@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css" />
+    <link rel="stylesheet" href="../css/flex.css" />
+    <title>Pet Care | <%= pageTitle %></title>
+  </head>
+  <body>
+    <h1>login</h1>
+    <span><%= errorMessage %></span>
+    <form method="post">
+      <div>
+        <label for="input_email">email</label>
+        <input
+          type="text"
+          id="input_email"
+          placeholder="userID or email"
+          name="email"
+        />
+      </div>
+      <div>
+        <label for="input_password">password</label>
+        <input
+          type="password"
+          id="input_password"
+          placeholder="password"
+          name="password"
+        />
+      </div>
+      <input type="submit" value="Login" />
+      <hr />
+      <span>Go </span>
+      <a href="/">Home &rarr;</a><br />
+      <span>Don't have an account?</span>
+      <a href="/join">Create one now &rarr;</a>
+    </form>
+    <footer>&copy; 2023 Petcare</footer>
+  </body>
+</html>

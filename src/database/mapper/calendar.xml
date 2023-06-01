@@ -1,0 +1,41 @@
+<!-- calendar.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CalendarMapper">
+  <insert id="insertCalendar" parameterType="Calendar">
+    INSERT INTO calendar (start, end, title, type, eventContents, allDay, createdAt, updatedAt)
+    VALUES (#{start}, #{end}, #{title}, #{type}, #{contents}, #{allDay}, NOW(), NOW())
+  </insert>
+ <select id="selectEventsByType" resultType="Calendar">
+    SELECT
+      id,
+      start,
+      end,
+      title,
+      type,
+      allDay,
+      eventContents
+    FROM
+      calendar
+    WHERE
+      (type = 'common' OR type = #{name})
+  </select>
+  <delete id="deleteCalendar" parameterType="Calendar">
+  DELETE FROM calendar
+  WHERE id = #{id}
+  </delete>
+
+  <update id="updateCalendar" parameterType="Calendar">
+    UPDATE
+      calendar
+    SET
+      type = #{type},
+      eventContents = #{eventContents}
+    WHERE
+      id = #{id}
+  </update>
+
+
+
+
+</mapper>

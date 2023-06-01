@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+form {
+  width: 400px;
+}
+
+input {
+  width: 100%;
+}
+input[type="text"] {
+  width: 100%;
+}

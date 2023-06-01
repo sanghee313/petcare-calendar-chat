@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#header {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.header__left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header__left_hidden {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.header__right {
+  width: 50%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.main_pet__img {
+  height: 13em;
+  width: 13em;
+  border-radius: 50%;
+  margin-bottom: 3em;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+#main_status {
+  display: flex;
+  flex-direction: row;
+  border-radius: 1em;
+  background-color: rgba(149, 157, 165, 0.2);
+  width: 700px;
+}
+
+#main_status .list {
+  padding: 2em;
+  width: 20em;
+}
+
+#main_status span {
+  border-bottom: 2px solid black;
+  padding: 3px;
+}
+
+#main_status ul {
+  margin-top: 1em;
+}

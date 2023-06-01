@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css" />
+    <!-- <link rel="stylesheet" href="../css/flex.css" /> -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: auto;
+      }
+
+      form {
+        width: 400px;
+      }
+
+      input {
+        width: 100%;
+      }
+      input[type="text"] {
+        width: 100%;
+      }
+    </style>
+    <title>Pet Care : Pet Edit</title>
+  </head>
+  <body>
+    <h1>pet edit</h1>
+    <form method="post">
+      <div>
+        <label for="input_name">Name</label>
+        <input
+          name="name"
+          type="text"
+          id="input_name"
+          placeholder="이름"
+          value="<%= pet.name%>"
+          required
+        />
+      </div>
+      <div>
+        <label for="input_age">Age</label>
+        <input
+          type="text"
+          name="age"
+          id="input_age"
+          value="<%= pet.age%>"
+          placeholder="나이"
+        />
+      </div>
+      <div>
+        <label for="input_birth">Birth</label>
+        <input
+          type="text"
+          name="birth"
+          id="input_birth"
+          value="<%= pet.birth%>"
+          placeholder="생일"
+        />
+      </div>
+      <div>
+        <label for="input_type">Type</label>
+        <input
+          type="text"
+          name="type"
+          id="input_type"
+          value="<%= pet.type.value%>"
+          placeholder="종"
+          required
+        />
+        <input
+          type="text"
+          name="type_details"
+          id="input_type"
+          value="<%= pet.type.details%>"
+          placeholder="품종"
+        />
+      </div>
+      <div>
+        <label for="input_introduce"> introduce (,) </label>
+        <input
+          type="text"
+          value="<%= pet.introduce %>"
+          placeholder="반려동물을 소개해주세요!"
+          name="introduce"
+          id="input_introduce"
+        />
+      </div>
+      <input type="submit" value="save" />
+      <hr />
+      <span>Go </span>
+      <a href="/pet">Pet &rarr;</a><br />
+    </form>
+    <footer>&copy; 2023 Petcare</footer>
+  </body>
+</html>
