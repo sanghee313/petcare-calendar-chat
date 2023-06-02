@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <title>채팅</title>
     <!-- <link rel="stylesheet" href="/css/index.css" /> -->
-    <link rel="stylesheet" href="../css/chat.css" />
+    <link rel="stylesheet" href="../css/chating.css" />
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
       // 현재 URL을 가져옵니다.
       var currentUrl = window.location.href;
@@ -27,91 +28,40 @@
       /* 접속 되었을 때 실행 */
       socket.on("connect", function () {
         /* 이름을 입력받고 */
-        var name = prompt("반갑습니다!", "");
+        // var name = prompt("반갑습니다!", "");
+        var name = username;
         console.log(name);
-
-        /* 이름이 빈칸인 경우 */
-        if (!name) {
-          name = "익명";
-        }
 
         /* 서버에 새로운 유저가 왔다고 알림 */
         socket.emit("newUser", name);
       });
-
-      /* 서버로부터 데이터 받은 경우 */
-      socket.on("update", function (data) {
-        var chat = document.getElementById("chat");
-
-        var message = document.createElement("div");
-        var node = document.createTextNode(`${data.name}: ${data.message}`); //이부분 수정
-        var className = "";
-
-        // 타입에 따라 적용할 클래스를 다르게 지정
-        switch (data.type) {
-          case "message":
-            className = "other";
-            break;
-
-          case "connect":
-            className = "connect";
-            break;
-
-          case "disconnect":
-            className = "disconnect";
-            break;
-        }
-
-        message.classList.add(className);
-        message.appendChild(node);
-        chat.appendChild(message);
-      });
-
-      /* 메시지 전송 함수 */
-      function send() {
-        // 입력되어있는 데이터 가져오기
-        var message = document.getElementById("test").value;
-
-        // 가져왔으니 데이터 빈칸으로 변경
-        document.getElementById("test").value = "";
-
-        // 내가 전송할 메시지 클라이언트에게 표시 ----> 이부분 수정하기
-        var chat = document.getElementById("chat");
-        var msg = document.createElement("div");
-        var node = document.createTextNode(message);
-        msg.classList.add("me");
-        msg.appendChild(node);
-        chat.appendChild(msg);
-
-        // 서버로 message 이벤트 전달 + 데이터와 함께
-        socket.emit("message", { type: "message", message: message });
-      }
     </script>
   </head>
   <body>
-    <h1><%=username%></h1>
-    <div id="main">
-      <div id="chat">
-        <!-- 채팅 메시지 영역 -->
-        <!-- <div class="wrap">
-          <div class="chat ch1">
-            <div class="icon"><i class="fa-solid fa-user"></i></div>
-            <div class="textbox">안녕하세요. 반갑습니다.</div>
-            <span>조상희</span>
-          </div>
-          
-          <div class="chat ch2">
-            <div class="icon"><i class="fa-solid fa-user"></i></div>
-            <div class="textbox">
-              안녕하세요. 친절한효자손입니다. 그동안 잘 지내셨어요?
-            </div>
-          </div> -->
-        <!--삭제하기-->
-      </div>
-      <div>
-        <input type="text" id="test" placeholder="메시지를 입력해주세요.." />
-        <button onclick="send()">전송</button>
-      </div>
-    </div>
+    <section class="msger">
+      <header class="msger-header">
+        <div class="msger-header-title">
+          <i class="fas fa-comment-alt"></i> Family Chat
+        </div>
+        <div class="msger-header-options">
+          <span><i class="fas fa-cog"></i></span>
+        </div>
+      </header>
+
+      <main class="msger-chat">
+        <!--코드 생성 되는 장소-->
+      </main>
+
+      <form class="msger-inputarea">
+        <input
+          type="text"
+          class="msger-input"
+          placeholder="Enter your message..."
+        />
+        <button type="submit" class="msger-send-btn">Send</button>
+      </form>
+    </section>
+
+    <script src="/js/chat.js"></script>
   </body>
 </html>
