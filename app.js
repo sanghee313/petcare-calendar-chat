@@ -27,11 +27,44 @@ app.use(express.static(__dirname + "/src/views"));
 // app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
+/**session으로 profile의 string을 받을것 */
+const maria = require("./src/database/connect/maria");
+const mybatisMapper = require("mybatis-mapper");
+
+// MariaDB 연결
+maria.connect();
+
+// MyBatis 매퍼 생성 및 XML 파일 로드
+mybatisMapper.createMapper(["./src/database/mapper/calendar.xml"]);
+
 /*이전 가족 창에서 채팅창을 받는다.*/
 var username;
 app.get("/chat", function (req, res) {
-  username = req.body.username;
-  res.render("index", { username: username });
+  username = req.query.username; // req.query.username을 사용하여 쿼리 문자열에서 username 값을 가져옴
+  console.log(username);
+  //SQL 파라미터
+  const parameter = {
+    name: username, //공통 or 개인 => session user를 받아서 처리하기
+  };
+
+  //SQL문 가져오기
+  const format = { language: "sql", indent: "  " };
+  const query = mybatisMapper.getStatement(
+    "CalendarMapper",
+    "selectEventsByType",
+    parameter,
+    format
+  );
+
+  //실행
+  maria.query(query, function (err, results, fields) {
+    if (err) {
+      console.error("An error occurred while executing the query:", err);
+    }
+
+    // EJS 파일 렌더링 및 결과 전달
+    return res.render("index", { username: username, results: results });
+  });
 });
 
 io.sockets.on("connection", function (socket) {
