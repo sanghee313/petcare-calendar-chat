@@ -13,11 +13,16 @@ const fs = require("fs");
 /* express 객체 생성 */
 const app = express();
 
+const bodyParser = require("body-parser");
+
 /* express http 서버 생성 */
 const server = http.createServer(app);
 
 /* 생성된 서버를 socket.io에 바인딩 */
 const io = socket(server);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /*ejs 사용*/
 app.set("views", __dirname + "/src/views");
@@ -64,6 +69,126 @@ app.get("/chat", function (req, res) {
 
     // EJS 파일 렌더링 및 결과 전달
     return res.render("index", { username: username, results: results });
+  });
+});
+
+app.post("/family/add", function (req, res) {
+  const eventData = req.body; // 전송된 데이터는 req.body에 있습니다.
+
+  const user = username; //session 값 받아서 수정하기
+
+  if (eventData.type != "common") {
+    eventData.type = user;
+  }
+
+  const parameter = {
+    start: eventData.start, //시작 시간
+    end: eventData.end, //종료 시간
+    title: eventData.title, //제목
+    type: eventData.type, //공통 or 개인 => session user를 받아서 처리하기
+    contents: eventData.contents, //세부 내용
+    allDay: eventData.allDay ? 1 : 0, //allDay true or false
+  };
+
+  var format = { language: "sql", indent: " " };
+  var query = mybatisMapper.getStatement(
+    "CalendarMapper",
+    "insertCalendar",
+    parameter,
+    format
+  );
+
+  // 쿼리 실행
+  maria.query(query, function (err, results, fields) {
+    if (err) {
+      console.error("이벤트 데이터 삽입 중 오류 발생:", err);
+      res.status(500).json({
+        error: "데이터베이스에 이벤트 데이터를 삽입하는 데 실패했습니다.",
+      });
+    } else {
+      console.log("이벤트 데이터가 성공적으로 삽입되었습니다.");
+      res
+        .status(200)
+        .json({ message: "이벤트 데이터가 성공적으로 삽입되었습니다." });
+    }
+  });
+});
+
+app.delete("/family/delete", function (req, res) {
+  const eventId = req.body.id;
+
+  console.log(eventId);
+
+  // SQL 파라미터
+  const parameter = {
+    id: eventId,
+  };
+
+  // SQL문 가져오기
+  const format = { language: "sql", indent: "  " };
+  const query = mybatisMapper.getStatement(
+    "CalendarMapper",
+    "deleteCalendar",
+    parameter,
+    format
+  );
+
+  // 실행
+  maria.query(query, function (err, results, fields) {
+    if (err) {
+      console.error("An error occurred while executing the query:", err);
+      res.status(500).json({
+        error: "데이터베이스에서 이벤트를 삭제하는 데 실패했습니다.",
+      });
+    } else {
+      console.log("이벤트가 성공적으로 삭제되었습니다.");
+      res.status(200).json({ message: "이벤트가 성공적으로 삭제되었습니다." });
+    }
+  });
+});
+
+app.put("/family/update", function (req, res) {
+  const user = username; //session 값 받아서 수정하기
+  const updateID = req.body.id;
+  const updateContents = req.body.contents;
+  var updateType = req.body.type;
+  if (updateType !== "common") {
+    updateType = user;
+  }
+
+  console.log(updateID);
+  console.log(updateContents);
+  console.log(updateType);
+
+  // SQL 파라미터
+  const parameter = {
+    id: updateID,
+    eventContents: updateContents,
+    type: updateType,
+  };
+
+  // SQL문 가져오기
+  const format = { language: "sql", indent: "  " };
+  const query = mybatisMapper.getStatement(
+    "CalendarMapper",
+    "updateCalendar",
+    parameter,
+    format
+  );
+
+  // 실행
+  maria.query(query, function (err, results, fields) {
+    if (err) {
+      console.error("An error occurred while executing the query:", err);
+      res.status(500).json({
+        error: "데이터베이스에서 이벤트를 업데이트하는 데 실패했습니다.",
+      });
+    } else {
+      console.log("이벤트가 성공적으로 업데이트되었습니다.");
+      res
+        .status(200)
+        .json({ message: "이벤트가 성공적으로 업데이트되었습니다." });
+    }
   });
 });
 
