@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leegeunhyeok/node-chat.git"
+    "url": "https://github.com/sanghee313/petcare-calendar-chat.git"
   },
   "author": "ChoSangHee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/leegeunhyeok/node-chat/issues"
+    "url": "https://github.com/sanghee313/petcare-calendar-chat.git"
   },
-  "homepage": "https://github.com/leegeunhyeok/node-chat#readme",
+  "homepage": "https://github.com/sanghee313/petcare-calendar-chat.git",
   "dependencies": {
     "express": "^4.16.3",
     "mybatis-mapper": "^0.6.8",
