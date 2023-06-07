@@ -4,7 +4,7 @@ const conn = maria.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "cho0313*",
+  password: "gnwhddldi2!",
   database: "petcare",
 });
 console.log("maria.db 연동");

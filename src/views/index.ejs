@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <title>채팅</title>
     <!-- <link rel="stylesheet" href="/css/index.css" /> -->
+    <link rel="stylesheet" href="../css/header.css"/>
     <link rel="stylesheet" href="../css/chating.css" />
+    
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
@@ -327,162 +329,153 @@
           var eventUpdateDiv = document.getElementById("update");
           eventUpdateDiv.style.display = "none";
         });
-
-
       };
     </script>
   </head>
-  <body>
-    <header>
-      <nav class="navbar">
-        <ul class="navbar_menu">
-          <li><a href="#">Pet</a></li>
-          <li><a href="#">Iot</a></li>
-          <li><a href="#">Edit</a></li>
-          <li><a href="#">Schedule with Communication</a></li>
-        </ul>
-        <div class="navbar_logo">
-          <i class="fa-solid fa-house"></i>
-          <a href="">Petcare</a>
+    <header class="header">
+      <div class="header_logo">
+        <a href="/"><h1>Petcare</h1></a>
+      </div>
+      <nav>
+        <div class="header_gnb">
+          <ul>
+            <li><a href="/pet">Pet</a></li>
+            <li><a href="/iot">Iot</a></li>
+            <li><a href="/user/Profile">Profile</a></li>
+            <li><a href="/family">Family</a></li>
+            <li><a href="/user/Logout">Logout</a></li>
+          </ul>
         </div>
-        <ul class="navbar_login">
-          <li><a href="#">Login</a></li>
-        </ul>
       </nav>
     </header>
-
-    <div id="calendar-container">
-      <div id="calendar"></div>
-      <div id="calendar-form ">
-        <div id="eventInput">
-          <div id="selectedDate"></div>
-          <div id="selectedTime"></div>
-          <div id="selectedAllDay"></div>
-          <label for="input-title">주제</label>
-          <input
-            type="text"
-            id="eventTitle"
-            placeholder="주제"
-            required
-          /><br />
-          <div id="input-type-div">
-            <label for="input-type">타입</label>
-            &nbsp; &nbsp;
-            <input
-              type="radio"
-              id="commonType"
-              name="eventType"
-              value="common"
-              required
-            />
-            <label for="commonType">공통</label>
-            &nbsp; &nbsp;
-            <input
-              type="radio"
-              id="meType"
-              name="eventType"
-              value="me"
-              required
-            />
-            <label for="meType">나</label>
-          </div>
-          <label for="input-contents">세부내용</label>
-          <textarea id="eventContents" placeholder="세부 내용"></textarea>
-          <br />
-          <div id="button-group">
-            <button id="deleteButton">delete</button>
-            <button id="addButton">Add</button>
-          </div>
-        </div>
-        <div id="eventClick">
-          <div id="top-click">
-            <div id="clickedDate"></div>
-            <button id="deleteClickedButton">delete</button>
-          </div>
-
-          <div id="click-container">
-            <div id="click-left">
-              <div id="clickedTime"></div>
-              <div id="clickedAllday"></div>
-              <div id="typeContainer">
+    <body>
+        <div id="calendar-container">
+          <div id="calendar"></div>
+          <div id="calendar-form ">
+            <div id="eventInput">
+              <div id="selectedDate"></div>
+              <div id="selectedTime"></div>
+              <div id="selectedAllDay"></div>
+              <label for="input-title">주제</label>
+              <input
+                type="text"
+                id="eventTitle"
+                placeholder="주제"
+                required
+              /><br />
+              <div id="input-type-div">
                 <label for="input-type">타입</label>
-                <div id="clickedType"></div>
+                &nbsp; &nbsp;
+                <input
+                  type="radio"
+                  id="commonType"
+                  name="eventType"
+                  value="common"
+                  required
+                />
+                <label for="commonType">공통</label>
+                &nbsp; &nbsp;
+                <input
+                  type="radio"
+                  id="meType"
+                  name="eventType"
+                  value="me"
+                  required
+                />
+                <label for="meType">나</label>
               </div>
-              <div id="clickedTitle"></div>
-            </div>
-            <div id="click-right">
               <label for="input-contents">세부내용</label>
-              <div id="clickedContents"></div>
+              <textarea id="eventContents" placeholder="세부 내용"></textarea>
+              <br />
+              <div id="button-group">
+                <button id="deleteButton">delete</button>
+                <button id="addButton">Add</button>
+              </div>
+            </div>
+            <div id="eventClick">
+              <div id="top-click">
+                <div id="clickedDate"></div>
+                <button id="deleteClickedButton">delete</button>
+              </div>
+              <div id="click-container">
+                <div id="click-left">
+                  <div id="clickedTime"></div>
+                  <div id="clickedAllday"></div>
+                  <div id="typeContainer">
+                    <label for="input-type">타입</label>
+                    <div id="clickedType"></div>
+                  </div>
+                  <div id="clickedTitle"></div>
+                </div>
+                <div id="click-right">
+                  <label for="input-contents">세부내용</label>
+                  <div id="clickedContents"></div>
+                </div>
+              </div>
+              <br />
+              <div id="click-button-group">
+                <button id="updateEventButton">Update</button>
+                <button id="removeEventButton">Remove</button>
+              </div>
+            </div>
+            <div id="update">
+              <div id="updateDate"></div>
+              <div id="updateTime"></div>
+              <div id="updateAllday"></div>
+              <div id="updateTitle"></div>
+              <div id="update-type-div">
+                <label for="update-type">타입</label>
+                &nbsp; &nbsp;
+                <input
+                  type="radio"
+                  id="updatCommonType"
+                  name="updateType"
+                  value="common"
+                  required
+                />
+                &nbsp; &nbsp;
+                <label for="commonType">공통</label>
+                <input
+                  type="radio"
+                  id="updateMeType"
+                  name="updateType"
+                  value="me"
+                  required
+                />
+                <label for="meType">나</label>
+              </div>
+              <label for="update-contents">세부내용</label>
+              <textarea id="updateContents" placeholder="세부 내용"></textarea>
+              <br />
+              <div id="update-button-group">
+                <button id="updateClickedButton">Delete</button>
+                <button id="updateButton">Update</button>
+              </div>
             </div>
           </div>
-          <br />
-          <div id="click-button-group">
-            <button id="updateEventButton">Update</button>
-            <button id="removeEventButton">Remove</button>
-          </div>
         </div>
-
-        <div id="update">
-          <div id="updateDate"></div>
-          <div id="updateTime"></div>
-          <div id="updateAllday"></div>
-          <div id="updateTitle"></div>
-          <div id="update-type-div">
-            <label for="update-type">타입</label>
-            &nbsp; &nbsp;
+        <section class="msger">
+          <header class="msger-header">
+            <div class="msger-header-title">
+              <i class="fas fa-comment-alt"></i> Family Chat
+            </div>
+            <div class="msger-header-options">
+              <span><i class="fas fa-cog"></i></span>
+            </div>
+          </header>
+          <main class="msger-chat">
+            <!--코드 생성 되는 장소-->
+          </main>
+          <form class="msger-inputarea">
             <input
-              type="radio"
-              id="updatCommonType"
-              name="updateType"
-              value="common"
-              required
+              type="text"
+              class="msger-input"
+              placeholder="Enter your message..."
             />
-            &nbsp; &nbsp;
-            <label for="commonType">공통</label>
-            <input
-              type="radio"
-              id="updateMeType"
-              name="updateType"
-              value="me"
-              required
-            />
-            <label for="meType">나</label>
-          </div>
-          <label for="update-contents">세부내용</label>
-          <textarea id="updateContents" placeholder="세부 내용"></textarea>
-          <br />
-          <div id="update-button-group">
-            <button id="updateClickedButton">Delete</button>
-            <button id="updateButton">Update</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section class="msger">
-      <header class="msger-header">
-        <div class="msger-header-title">
-          <i class="fas fa-comment-alt"></i> Family Chat
-        </div>
-        <div class="msger-header-options">
-          <span><i class="fas fa-cog"></i></span>
-        </div>
-      </header>
-
-      <main class="msger-chat">
-        <!--코드 생성 되는 장소-->
-      </main>
-
-      <form class="msger-inputarea">
-        <input
-          type="text"
-          class="msger-input"
-          placeholder="Enter your message..."
-        />
-        <button type="submit" class="msger-send-btn">Send</button>
-      </form>
-    </section>
-    <!-- <script src="/js/calendar.js"></script> -->
-    <script src="/js/chat.js"></script>
-  </body>
+            <button type="submit" class="msger-send-btn">Send</button>
+          </form>
+        </section>
+        <!-- <script src="/js/calendar.js"></script> -->
+        <script src="/js/chat.js"></script>
+      </body>
 </html>

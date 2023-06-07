@@ -1,0 +1,51 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    text-decoration: none;
+    position: relative;
+}
+
+.header {
+    height:100px;
+    text-align: center;
+    background-color: rgb(108, 213, 255);
+    border-bottom: 1px solid var(--purple);
+    opacity: 1;
+    position:fixed;
+    top:0;
+    width: 100%;
+    z-index: 1;
+}
+
+.header_logo h1{
+    font: bold 40px 'arial';
+    padding-top:0px;
+    letter-spacing:2px;
+    color:#474787;
+}
+
+.header_logo p{
+    font: bold 40px 'arial';
+    letter-spacing:2px;
+}
+
+.header_gnb ul{
+    margin-top: 10px;
+}
+
+.header_gnb ul li{
+    display:inline-block;
+}
+
+.header_gnb ul li a{
+    display:block;
+    font:bold 24px 'arial';
+    color:#474787;
+    margin: 0px 16px;
+}
+
+.header_gnb li:hover {
+    background-color: rgb(96, 159, 218);
+    border-radius: 4px;
+}

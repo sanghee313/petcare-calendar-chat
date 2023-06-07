@@ -150,89 +150,6 @@ body {
   background-color: #fcfcfe;
 }
 
-/*navbar*/
-a {
-  text-decoration: none;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #207ae9;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-.navbar_logo {
-  font-size: 24px;
-  color: white;
-}
-
-.navbar_logo {
-  position: absolute;
-  left: 47%;
-  justify-content: center;
-  text-align: center;
-  list-style: none;
-}
-
-.navbar_logo li {
-  padding: 8px 12px;
-}
-
-.navbar_menu {
-  display: flex;
-  list-style: none;
-  padding-left: 0;
-}
-
-.navbar_menu li {
-  padding: 8px 12px;
-}
-
-.navbar_menu li:hover {
-  background-color: rgb(5, 45, 87);
-  border-radius: 4px;
-}
-
-.navbar_login {
-  list-style: none;
-  color: white;
-  display: flex;
-}
-
-.navbar_login li {
-  padding: 8px 12px;
-}
-
-.navbar_login li:hover {
-  background-color: rgb(5, 45, 87);
-  border-radius: 4px;
-}
-
-@media screen and (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 8px 12px;
-  }
-  .navbar_logo {
-    flex-direction: column;
-    align-items: center;
-  }
-  .navbar_logo li {
-    width: 100%;
-    text-align: center;
-  }
-  .navbar_login {
-    justify-content: center;
-    width: 100%;
-  }
-}
 /*달력 css*/
 .fc {
   display: flex;
@@ -288,7 +205,7 @@ button:hover {
 }
 
 #calendar-container {
-  height: calc(90% - 50px);
+  height: calc(90% - 200px);
   width: 35%;
 }
 

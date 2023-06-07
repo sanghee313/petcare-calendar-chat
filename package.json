@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/sanghee313/petcare-calendar-chat.git",
   "dependencies": {
+    "ejs": "^3.1.9",
     "express": "^4.16.3",
     "mybatis-mapper": "^0.6.8",
     "mysql2": "^3.3.3",
