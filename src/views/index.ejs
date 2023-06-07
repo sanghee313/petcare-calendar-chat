@@ -44,6 +44,7 @@
       var startTime,endTime;
       var u_start,u_end,u_allDay, u_ID,u_title;
       var calendar;
+      let selectedEvent = null;
       document.addEventListener("DOMContentLoaded", function () {
         var calendarEl = document.getElementById("calendar");
         calendar = new FullCalendar.Calendar(calendarEl, {
@@ -140,6 +141,8 @@
             eventClickDiv.style.display = "none";
             var eventUpdateDiv = document.getElementById("update");
             eventUpdateDiv.style.display = "none";
+
+            selectedEvent = arg.event;
             /*update data*/
             u_start = arg.event.start;
             u_end = arg.event.end;
@@ -267,6 +270,38 @@
             color :color,
           });
           /*calendar 값 post*/
+          var eventData = {
+              start: start.toISOString(), //달력 시작
+              end: end.toISOString(),     //달력 종료
+              allDay: allDay,             //달력 하루종일인지 파악
+              title: title,               //달력 제목
+              contents: contents,         //달력 세부 내용
+              type: type,                 // 타입 - 가족 공통 , 내꺼 전용
+            };
+
+            //버튼 데이터 전송
+            fetch("/family/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(eventData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Event data has been successfully posted.");
+                  // 여기에서 필요한 추가 작업을 수행할 수 있습니다.
+                } else {
+                  console.log("Failed to post event data.");
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  "An error occurred while posting event data:",
+                  error
+                );
+              });
+
           calendar.unselect();
           timeInput.value ="";
           titleInput.value = "";
@@ -274,6 +309,95 @@
           commonTypeInput.checked = false;
           var eventInputDiv = document.getElementById("eventInput");
           eventInputDiv.style.display = "none";
+        });
+        var removeButton = document.getElementById("removeEventButton");
+        removeButton.addEventListener("click",function(){
+          if (selectedEvent) {
+            selectedEvent.remove();
+            selectedEvent = null;
+          }
+          /*delete 전송*/
+          fetch('/family/delete', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: u_ID })
+          })
+          .then(response => {
+            if (response.ok) {
+              // 삭제 성공한 경우
+              console.log('데이터가 성공적으로 삭제되었습니다.');
+              // 추가로 필요한 처리 수행
+            } else {
+              // 삭제 실패한 경우
+              console.log('데이터 삭제에 실패했습니다.');
+            }
+          })
+          .catch(error => {
+            console.error('데이터 삭제 중 오류가 발생했습니다.', error);
+          });
+        });
+        var updateButton = document.getElementById("updateButton");
+        updateButton.addEventListener("click",function(){
+          if (selectedEvent) {
+            selectedEvent.remove();
+            selectedEvent = null;
+          }
+          var updateType = document.querySelector('input[name="updateType"]:checked');
+          var updateTypeValue = updateType ? updateType.value : '';
+              // console.log(updateTypeValue);
+
+          if(updateTypeValue ==="common"){
+            calendar.addEvent({
+              start: u_start.toISOString(),
+              end: u_end.toISOString(),
+              title: u_title,
+              allDay: u_allDay,
+              color :"orange",
+            });
+          }else{
+            calendar.addEvent({
+              start: u_start.toISOString(),
+              end: u_end.toISOString(),
+              title: u_title,
+              allDay: u_allDay,
+            });
+          }
+          // console.log(u_ID);
+          // console.log(updateTypeValue);
+
+          var updateContents = document.getElementById("updateContents");
+          var u_cont = updateContents.value.trim();
+          // console.log(u_cont);
+
+          // 업데이트할 데이터 객체 생성
+          var updateData = {
+            id: u_ID,                // 업데이트할 데이터의 고유 식별자
+            type: updateTypeValue,   // 업데이트할 타입 (common 또는 me)
+            contents: u_cont         // 업데이트할 내용
+          };
+          // console.log(updateData);
+
+          // 서버로 데이터 전송
+          fetch("/family/update", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updateData)
+          })
+          .then(response => {
+            if (response.ok) {
+              console.log("Data has been successfully updated.");
+              // 업데이트 성공 후 수행할 작업을 여기에 추가하세요.
+            } else {
+              console.log("Failed to update data.");
+            }
+          })
+          .catch(error => {
+            console.log("An error occurred while updating data:", error);
+          });
         });
         var noShowButton = document.getElementById("deleteButton");
         noShowButton.addEventListener("click", function() {
